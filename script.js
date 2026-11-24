@@ -751,7 +751,7 @@ const casc = document.createElement('div'); casc.className = 'casc'; casc.setAtt
 let casT = null;
 function casStart() {
   casStop();
-  casc.style.setProperty('--ph', (peek.style.backgroundImage.match(/url\("?data:image\/jpeg[^)]*\)/) || [''])[0]);
+  casc.style.setProperty('--ph', `url("${new URL('assets/ravi.jpg', location.href).href}")`);
   // a few trails start at once, one from the top-left corner; each steps diagonally, dropping a photo
   // every tick, and bounces off the screen margins like light off a mirror
   const S = Math.round(Math.min(200, Math.max(110, VW * 0.14))), st = Math.round(S * 0.2);
