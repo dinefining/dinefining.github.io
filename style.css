@@ -67,6 +67,7 @@ html.mouse,html.mouse *{cursor:none !important}
 .bio .vline{position:absolute;width:.75px;background:#fff} /* white on black reads heavier than the black card gaps, so a touch thinner */
 .bio .txt .row:last-child{margin-bottom:0}
 .vcard{display:block;position:relative;width:100%;aspect-ratio:16/9;background:#111;margin-bottom:var(--vg,16px);overflow:hidden}
+.bio .vids .vcard:last-child{margin-bottom:0}
 .vcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vtap{display:none}
 .vcard img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
