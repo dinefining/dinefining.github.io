@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dinefining Stack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="bio" id="bio">
+  <div class="col txt" id="txt">
+    <h2 class="hd">About</h2>
+    <i class="sep stop" aria-hidden="true"></i>
+    <p><span class="back" id="back" role="button" tabindex="0" title="Back to the cards">Dinefining</span> is a computational artist based in Cologne. Through live-coded music and visuals, he treats code as both instrument and medium, bringing algorithmic patterns together with human emotion and spontaneity. His work often sits in the grey spaces between dreams, melancholia and a nostalgia for a future suspended somewhere between present and past. His soundscapes aim to connect people to themselves, to each other and to the space they share. He sees code-based art as a practice of working within limits: a form of expression born from constraint, in a world where abundance is a privilege.</p>
+    <p>Dinefining is the creative alias of <a class="who" href="https://ravipopat.info" target="_blank" rel="noopener">Ravi Popat</a>. Drawing on a multidisciplinary background in engineering, film, visual communication and design strategy, he works by day as a brand and service designer.</p>
+    <section class="row mpieces"><i class="sep" aria-hidden="true"></i><h2>Pieces</h2><div class="mvids"><div class="vcount" id="vcount"></div></div></section>
+    <section class="row socials"><h2>Socials</h2><ul class="plain">
+      <li><a href="https://www.instagram.com/dinefining_/" target="_blank" rel="noopener"><span class="t">Gram</span></a></li>
+      <li><a href="https://www.youtube.com/@dinefining" target="_blank" rel="noopener"><span class="t">Tube</span></a></li>
+      <li><a href="https://maybemachines.com" target="_blank" rel="noopener"><span class="t">Software</span></a></li>
+      <li><a href="mailto:hello@ravipopat.info"><span class="t">Contact</span></a></li>
+    </ul></section>
+    <div class="ft"><i class="sep" aria-hidden="true"></i><p><span class="cr">Dinefining © 2026</span><span class="bar">|</span><a href="https://ko-fi.com/dinefining" target="_blank" rel="noopener">Buy me a <span class="cup">☕</span></a></p></div>
+    <div class="lst" id="lst">
+      <i class="sep dtop" aria-hidden="true"></i>
+      <section class="row perf"><i class="sep" aria-hidden="true"></i><h2>Performances</h2><ul class="plain">
+        <li><span class="t">Hyperspace Live Coding Festival ’26</span><span class="m">TOPLAP, Online</span></li>
+        <li><span class="t">AI, Design, &amp; New Creative Territories</span><span class="m">Hatch Conference, Cologne</span></li>
+        <li><a href="https://algorave.bandcamp.com/album/compassion-through-algorithms-volume-iii" target="_blank" rel="noopener"><span class="t">Compassion Through Algorithms <span class="ne">↗</span></span></a><span class="m">Compiled by TOPLAP</span></li>
+        <li><span class="t">7th Orbit Generation</span><span class="m">Algorave India, Delhi</span></li>
+        <li><span class="t">Coding Islands</span><span class="m">TOPLAP x Kunsthalle, Düsseldorf</span></li>
+        <li><span class="t">Solstice Stream ’24</span><span class="m">TOPLAP, Online</span></li>
+        <li><span class="t">Solstice Stream ’23</span><span class="m">TOPLAP, Online</span></li>
+      </ul></section>
+      <section class="row talks"><i class="sep" aria-hidden="true"></i><h2>Talks &amp; Workshops</h2><ul class="plain">
+        <li><span class="t">AI, Design, &amp; New Creative Territories</span><span class="m">Hatch Conference, Cologne</span></li>
+        <li><span class="t">Making Music with Code</span><span class="m">Manyone, Online</span></li>
+      </ul></section>
+    </div>
+  </div>
+  <div class="col vids" id="vids"></div>
+  <i class="vline" id="vline" aria-hidden="true"></i>
+  <i class="mband" id="mband" aria-hidden="true"></i>
+  <i class="vline" id="vline2" aria-hidden="true"></i>
+</div>
+<div class="peek" id="peek" aria-hidden="true"></div>
+<div class="tick" id="tick" aria-hidden="true" hidden><div class="track"></div></div>
+<button class="home" id="home" aria-label="Back to the stack"></button>
+
+<div class="foot" id="foot"><span>Dinefining</span><span>Live coded music + visuals</span><span id="clock">00:00:00 CET</span></div>
+
+<div class="fx" aria-hidden="true"><i class="vg"></i></div>
+<div class="cur hide" id="cur" aria-hidden="true"><i></i><svg class="logo" viewBox="-20 -20 595 698"><path class="o2" hidden d="M277.992 0C401.305 0 501.269 104.017 501.27 232.329C501.27 232.596 501.269 232.863 501.268 233.13C501.266 233.763 501.842 234.24 502.468 234.141C505.011 233.739 507.586 233.641 510.177 233.867C538.915 236.381 558.757 277.907 554.495 326.617C550.233 375.327 523.483 412.775 494.745 410.262C491.737 409.999 488.826 409.306 486.03 408.224C485.405 407.982 484.706 408.391 484.626 409.056C467.626 550.319 381.919 657.764 278.745 657.764C175.332 657.764 89.4655 549.819 72.7463 408.072C72.664 407.374 71.907 406.966 71.2718 407.266C67.8043 408.902 64.1444 409.925 60.3271 410.259C31.5893 412.773 4.83775 375.324 0.576172 326.614C-3.68539 277.904 16.1567 236.378 44.8945 233.864C47.7865 233.611 50.6583 233.764 53.4892 234.291C54.1231 234.409 54.7198 233.928 54.717 233.283C54.7156 232.965 54.7148 232.647 54.7148 232.329C54.7149 104.017 154.68 0.000210287 277.992 0Z"/><path class="o" d="M277.992 0C401.305 0 501.269 104.017 501.27 232.329C501.27 232.596 501.269 232.863 501.268 233.13C501.266 233.763 501.842 234.24 502.468 234.141C505.011 233.739 507.586 233.641 510.177 233.867C538.915 236.381 558.757 277.907 554.495 326.617C550.233 375.327 523.483 412.775 494.745 410.262C491.737 409.999 488.826 409.306 486.03 408.224C485.405 407.982 484.706 408.391 484.626 409.056C467.626 550.319 381.919 657.764 278.745 657.764C175.332 657.764 89.4655 549.819 72.7463 408.072C72.664 407.374 71.907 406.966 71.2718 407.266C67.8043 408.902 64.1444 409.925 60.3271 410.259C31.5893 412.773 4.83775 375.324 0.576172 326.614C-3.68539 277.904 16.1567 236.378 44.8945 233.864C47.7865 233.611 50.6583 233.764 53.4892 234.291C54.1231 234.409 54.7198 233.928 54.717 233.283C54.7156 232.965 54.7148 232.647 54.7148 232.329C54.7149 104.017 154.68 0.000210287 277.992 0Z"/><path class="s" d="M373 317.374L305.288 327.236C296.531 328.511 289.654 335.389 288.379 344.146L278.5 412L268.621 344.146C267.346 335.389 260.469 328.511 251.712 327.236L184 317.374L251.719 307.511C260.472 306.236 267.348 299.363 268.627 290.61L278.5 223L288.374 290.61C289.652 299.363 296.528 306.236 305.281 307.511L373 317.374Z"/></svg></div>
+
+<canvas id="c" aria-label="A stack of index cards with heads; pulled up cards are projects"></canvas>
+<canvas id="c2" aria-hidden="true"></canvas>
+
+<div class="ctrl" id="ctrl"><span class="st" id="st"></span></div>
+
+<div class="pop" id="pop" role="dialog" aria-modal="true" aria-label="Piece video">
+  <div class="pbox" id="pbox">
+    <button class="px" id="px" aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><line x1="2" y1="2" x2="14" y2="14"/><line x1="14" y1="2" x2="2" y2="14"/></svg></button>
+    <div class="pframe" id="pframe"></div>
+    <div class="pbar"><button id="pprev" aria-label="Previous"><span class="lg">Prev</span><span class="sm">P</span></button><span id="ptitle"></span><button id="pnext" aria-label="Next"><span class="lg">Next</span><span class="sm">N</span></button></div>
+  </div>
+</div>
+<div class="vid" id="vid" role="dialog" aria-modal="true" aria-label="Project video"><div class="frame" id="vframe"></div></div>
+<button class="vx" id="vx" aria-label="Close video"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><g><line x1="22" y1="22" x2="78" y2="78" vector-effect="non-scaling-stroke"/><line x1="78" y1="22" x2="22" y2="78" vector-effect="non-scaling-stroke"/></g></svg></button>
+<button class="vp" id="vp" aria-label="Previous video"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><g><line x1="78" y1="50" x2="22" y2="50" vector-effect="non-scaling-stroke"/><polyline points="50,22 22,50 50,78" fill="none" vector-effect="non-scaling-stroke"/></g></svg></button>
+<button class="vn" id="vn" aria-label="Next video"><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><g><line x1="22" y1="50" x2="78" y2="50" vector-effect="non-scaling-stroke"/><polyline points="50,22 78,50 50,78" fill="none" vector-effect="non-scaling-stroke"/></g></svg></button>
+
+<script src="script.js"></script>
+
+</body>
+</html>
