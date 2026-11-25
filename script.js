@@ -50,14 +50,32 @@ function rng(seed) {
 // so a column's first heading can start exactly where the dividers start (and the footer end where they end)
 // each row of slashes holds as many whole slashes as fit its width, spaced out to fill it exactly
 function fillSeps() {
-  ctx.font = `500 ${SEP_FS}px Karla, sans-serif`;
+  ctx.font = `500 ${BAND.sfs}px Karla, sans-serif`;
   const cw = ctx.measureText('/').width;
   document.querySelectorAll('.bio .sep').forEach(e => {
     const w = e.clientWidth; if (!w) return;
-    const n = Math.floor(w / (cw + 1));
-    e.textContent = '/'.repeat(n); e.style.letterSpacing = ((w - n * cw) / n) + 'px';
+    const n = Math.floor(w / (cw + 1)), ls = (w - n * cw) / n, row = '/'.repeat(n);
+    // the title this band carries, if any: the heading right after it (or inside the section right after it)
+    let t = e.nextElementSibling;
+    if (t && t.matches('.row')) t = t.querySelector(':scope > h2');
+    if (t && !t.matches('h2')) t = null;
+    const k = t && t.offsetWidth ? Math.min(n, Math.ceil(t.offsetWidth / (cw + ls))) : 0;
+    const mid = k ? `<span class="hole" style="visibility:hidden">${'/'.repeat(k)}</span>${'/'.repeat(n - k)}` : row;
+    e.innerHTML = [row, mid, row].join('\n'); // three rows
+    e.style.letterSpacing = ls + 'px';
   });
 }
+function bandFit(titleFs, lh) {
+  const fm = (fs, ch) => { ctx.font = `500 ${fs}px Karla, sans-serif`; const m = ctx.measureText(ch);
+    return {a: m.actualBoundingBoxAscent, d: m.actualBoundingBoxDescent, A: m.fontBoundingBoxAscent, D: m.fontBoundingBoxDescent}; };
+  const t = fm(titleFs, 'Abdfhklt'), s100 = fm(100, '/');
+  const sfs = titleFs;                                     // slashes at the titles' own size
+  const s = fm(sfs, '/');
+  const base = m => (lh - m.A - m.D) / 2 + m.A;           // baseline within a line box
+  const shift = (base(s) + s.d) - base(t);                // title baseline onto the slash's foot
+  return {sfs, shift, inkTop: base(s) - s.a};             // inkTop: slash top within its row
+}
+let BAND = {sfs: 18, shift: 0, inkTop: 0};
 function lineTrim(fs, lh) {
   ctx.font = `500 ${fs}px Karla, sans-serif`;
   const m = ctx.measureText('H'), asc = m.fontBoundingBoxAscent, desc = m.fontBoundingBoxDescent;
@@ -66,7 +84,8 @@ function lineTrim(fs, lh) {
 }
 const SLIVER = 8;
 let STICK = 0;
-const NUDGE = 2.5, NUDGE_TOP = 4, SEP_FS = 20; // a touch of air between the dividers' ends and the text
+const NUDGE = 2.5, NUDGE_TOP = 4;
+const sepFs = () => MOB ? 17 : 18, sepLh = () => MOB ? 24 : 26; // a touch of air between the dividers' ends and the text
 const mHeads = () => [...document.querySelectorAll('.bio .mpieces > h2, .bio .lst .row > h2')];
 function layout() {
   SPR = new Map();
@@ -98,8 +117,9 @@ function layout() {
     lst.style.padding = '';
     document.getElementById('vids').style.paddingLeft = '';
     // phones start straight with the bio, its first capitals just under the top margin
-    const tm = lineTrim(16, 24.5), ts = lineTrim(SEP_FS, 24.5);
-    document.getElementById('txt').style.paddingTop = (Y0 + NUDGE - ts.top) + 'px';
+    const tm = lineTrim(14, 21.5);
+    BAND = bandFit(14, 19);
+    document.getElementById('txt').style.paddingTop = (Y0 + NUDGE - BAND.inkTop) + 'px';
     document.querySelector('.bio .ft').style.marginBottom = '';
     document.getElementById('txt').style.marginBottom = '';
     document.querySelector('#txt > p').style.marginTop = '';
@@ -107,10 +127,11 @@ function layout() {
     // columns run from the very top of the screen, starting their content at the margin
     // three equal columns (bio, list, pieces); both lines sit on gap lines of the stack
     const third = C / 3, xa = X0 + third * colW, xb = X0 + 2 * third * colW;
-    const tm = lineTrim(15, 23), ts = lineTrim(SEP_FS, 23);
+    const tm = lineTrim(15, 23);
+    BAND = bandFit(15, 20);
     // first capitals sit just under where the dividers start, last baseline just above where they end
     // the windows end exactly where the dividers end; the footer's tail tucks into that edge
-    const T = Y0 + NUDGE_TOP - ts.top, Bt = VH - F;
+    const T = Y0 + NUDGE_TOP - BAND.inkTop, Bt = VH - F;
     document.querySelector('.bio .ft').style.marginBottom = '';
     document.getElementById('txt').style.marginBottom = -Math.max(0, tm.bottom - NUDGE) + 'px';
     Object.assign(bio.style, {left: '0px', width: (VW - F) + 'px', top: T + 'px', height: (Bt - T) + 'px', columnGap: '0px', gridTemplateColumns: `${xa}px ${xb - xa}px minmax(0,1fr)`});
@@ -141,8 +162,8 @@ function layout() {
     if (fp.scrollWidth > fp.clientWidth + 0.5) ft.classList.add('two');
   }
   {
-    const t = MOB ? lineTrim(16, 24.5) : lineTrim(15, 23);
-    document.querySelectorAll('#vids > .hd').forEach(h => h.style.marginBottom = (14.5 + t.top) + 'px');
+    const t = MOB ? lineTrim(14, 21.5) : lineTrim(15, 23);
+    document.querySelectorAll('#vids > .hd').forEach(h => h.style.marginBottom = MOB ? '' : (20 + 14.5 + t.top) + 'px');
     const mv = document.querySelector('.mvids'); if (mv) mv.style.marginTop = MOB ? (14.5 + t.top) + 'px' : '';
   }
 
@@ -204,7 +225,8 @@ function drawName(now) {
       const y = b.y + b.h / 2 + asc / 2;          // letters: ascender to baseline centred, so they read centred
       ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.fillText(pre, x, y); x += wp;
       ctx.fillStyle = '#fff'; ctx.fillText(name, x, y); x += wn + sp;
-      if (reduce || Math.floor(now / 530) % 2 === 0) ctx.fillRect(x, yc - asc, cw, asc + desc);
+      ctx.fillStyle = '#fff';
+      if (reduce || Math.floor(now / 530) % 2 === 0) ctx.fillRect(x, yc - asc + b.fs * 0.03, cw, asc + desc); // a hair lower
     } else {
       const ink = ctx.measureText(b.text), asc = ink.actualBoundingBoxAscent, desc = ink.actualBoundingBoxDescent;
       ctx.fillStyle = '#fff';
@@ -442,7 +464,7 @@ function sprite(inv, head, eyes, gv) {
   if (!bare) { g.fillStyle = '#000'; g.fillRect(0, 0, colW, GAP); }
   g.save();
   g.translate(colW / 2 - 278 * k, colW * 0.12); g.scale(k, k);
-  const tone = {b: ['#262626', '#000000'], w: ['#ffffff', '#cfcfcc'], y: ['#8dff6e', '#2fe000'], m: [MAG, MAG], p: ['#000', '#000']}[head];
+  const tone = {b: ['#262626', '#000000'], w: ['#ffffff', '#cfcfcc'], y: ['#5cff5c', '#00cc00'], m: [MAG, MAG], p: ['#000', '#000']}[head];
   const r = g.createRadialGradient(200, 170, 20, 278, 330, 420); r.addColorStop(0, tone[0]); r.addColorStop(1, tone[1]);
   g.fillStyle = r; g.fill(HEAD);
   g.save(); g.clip(HEAD);
@@ -714,13 +736,38 @@ function wave(ci) {
 
 /* ---------- text index ---------- */
 function buildIndex() {
-  document.getElementById('vids').innerHTML = '<i class="sep dtop" aria-hidden="true"></i><h2 class="hd">Pieces</h2>' + PROJECTS.map((p, i) => p.yt
+  document.getElementById('vids').innerHTML = '<i class="sep dtop" aria-hidden="true"></i><h2 class="hd"><span class="g">d3 $ </span>pieces<span class="g"> (youtube (id))</span></h2>' + PROJECTS.map((p, i) => p.yt
     ? `<div class="vcard"><button class="vtap" aria-label="Play ${p.t}"></button><iframe loading="lazy" title="${p.t}" src="https://www.youtube.com/embed/${p.yt}?rel=0&playsinline=1${location.origin.startsWith('http') ? '&origin=' + encodeURIComponent(location.origin) : ''}" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
     : '').join('');
   const t = document.querySelector('#tick .track');
   t.innerHTML = Array(16).fill('<span>This website tastes best with a beer</span><svg class="tstar" viewBox="180 219 197 197"><path d="M373 317.374L305.288 327.236C296.531 328.511 289.654 335.389 288.379 344.146L278.5 412L268.621 344.146C267.346 335.389 260.469 328.511 251.712 327.236L184 317.374L251.719 307.511C260.472 306.236 267.348 299.363 268.627 290.61L278.5 223L288.374 290.61C289.652 299.363 296.528 306.236 305.281 307.511L373 317.374Z"/></svg>').join('');
 }
 buildIndex();
+// a letter in the body copy vanishes when the pointer lands on it, and comes back 2.5 seconds later
+function vanishAt(x, y) {
+  let node, off;
+  if (document.caretPositionFromPoint) { const c = document.caretPositionFromPoint(x, y); if (!c) return; node = c.offsetNode; off = c.offset; }
+  else if (document.caretRangeFromPoint) { const c = document.caretRangeFromPoint(x, y); if (!c) return; node = c.startContainer; off = c.startOffset; }
+  if (!node || node.nodeType !== 3) return;
+  const host = node.parentElement;
+  if (!host || !host.closest('.bio p, .bio li, .bio .sep') || host.closest('.vanish, .hole')) return;
+  for (const i of [off, off - 1]) {               // the caret can land on either side of the letter
+    if (i < 0 || i >= node.length || /\s/.test(node.data[i])) continue;
+    const r = document.createRange(); r.setStart(node, i); r.setEnd(node, i + 1);
+    const b = r.getBoundingClientRect();
+    if (x < b.left || x > b.right || y < b.top || y > b.bottom) continue;
+    const sp = document.createElement('span'); sp.className = 'vanish';
+    r.surroundContents(sp);
+    setTimeout(() => { const par = sp.parentNode; if (!par) return; par.replaceChild(document.createTextNode(sp.textContent), sp); par.normalize(); }, 2500);
+    return;
+  }
+}
+let vanishQ = null;
+addEventListener('pointermove', e => {
+  if (e.pointerType !== 'mouse' || !bio.classList.contains('on')) return;
+  if (vanishQ) return;
+  vanishQ = requestAnimationFrame(() => { vanishQ = null; vanishAt(e.clientX, e.clientY); });
+}, {passive: true});
 // phones: "3 / 9" under the strip of pieces
 function vcount() {
   const v = document.getElementById('vids'), n = v.querySelectorAll('.vcard').length, c = v.querySelector('.vcard');
@@ -1015,7 +1062,7 @@ function makeTile(dark) {
 const DARK = makeTile(true), LIGHTSPECK = makeTile(false);
 document.body.style.backgroundImage = `url(${LIGHTSPECK.toDataURL()})`;
 document.getElementById('peek').style.backgroundImage = `url(${DARK.toDataURL()}), url(assets/ravi.jpg)`;
-document.querySelectorAll('.vx,.vp,.vn').forEach(b => b.style.backgroundImage = `url(${DARK.toDataURL()}), linear-gradient(#8dff6e,#2fe000)`);
+document.querySelectorAll('.vx,.vp,.vn').forEach(b => b.style.backgroundImage = `url(${DARK.toDataURL()}), linear-gradient(#5cff5c,#00cc00)`);
 
 console.log('%cd1 $ s "hello" # room 0.3\n-- you found the console. try typing hush on the page.', 'font-family:monospace;color:#31AF00');
 }
